@@ -1,0 +1,14 @@
+{
+  "name": "xin-data",
+  "version": "0.0.1",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lawnchair": "~0.6.3"
+  }
+}

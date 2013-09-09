@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript" src="../src/xin.data.js"></script>
+    <script type="text/javascript" src="../src/adapters/local-storage.js"></script>
+    <script type="text/javascript">
+        var repo = window.repo = new xin.data.Repository({name:'record'}, function(err) {
+            if (err) throw new Error(err.message);
+
+            repo.remove('2e42b99c-7290-e141-ea71-e656cbd25833', function(err) {
+                console.log('done');
+            });
+
+            // repo.get('4a8705e2-4afa-9863-6e32-faad31985083', function(err, model) {
+            //     model.name = 'adoel';
+            //     repo.save(model);
+            // });
+
+            // repo.all(function(err, models) {
+            //     console.log(models);
+            // });
+
+            repo.save({'name':'budi', 'age': 16});
+
+        });
+    </script>
+</body>
+</html>

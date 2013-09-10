@@ -46,11 +46,10 @@
                         repo.save({'name':'susi', 'age': 20});
                         repo.all(function(err, data) {
                             var obj = data[0];
-                            var name = obj.name;
                             obj.name = "nunu";
                             repo.save(obj);
                             repo.get(data[0].key, function(err, record) {
-                                expect(record.name).not.toBe(name);
+                                expect(record).not.toEqual(obj);
                             });
                         });
                     });

@@ -95,8 +95,10 @@
                 }
                 newIndex.push(index[i]);
             }
+
             if (found) {
                 storage.set(this.indexKey, newIndex);
+            } else {
             }
 
             if (callback) {
@@ -104,7 +106,7 @@
             }
         },
 
-        nuke: function() {
+        nuke: function(callback) {
             var index = storage.get(this.indexKey, []);
 
             for(var i in index) {

@@ -51,16 +51,16 @@
                 for(var j in storage[i]) {
                     if (index == j && value == storage[i][j]) {
                         storage[i][j] = updateValue;
-                        if (callback) { return callback(null, object); }
+                        if (callback) { return callback(null, storage[i]); }
                     }
                 }
             }
         },
-        get: function(options, callback) {
+        get: function(criteria, callback) {
             var index, value;
-            for(var x in options) {
+            for(var x in criteria) {
                 index = x;
-                value = options[x];
+                value = criteria[x];
             }
             for(var i in storage) {
                 for(var j in storage[i]) {
@@ -79,11 +79,11 @@
             return storage;
         },
 
-        remove: function(options, callback) {
+        remove: function(criteria, callback) {
             var index, value;
-            for(var x in options) {
+            for(var x in criteria) {
                 index = x;
-                value = options[x];
+                value = criteria[x];
             }
             for(var i in storage) {
                 for(var j in storage[i]) {

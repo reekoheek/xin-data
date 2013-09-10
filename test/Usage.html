@@ -6,11 +6,15 @@
 </head>
 <body>
     <script type="text/javascript" src="../src/xin.data.js"></script>
+    <!--
     <script type="text/javascript" src="../src/adapters/local-storage.js"></script>
+    -->
+    <script type="text/javascript" src="../src/adapters/memory.js"></script>
     <script type="text/javascript">
-        var repo = window.repo = new xin.data.Repository({name:'record'}, function(err) {
+        var repo = window.repo = new xin.data.Repository({name: 'record'}, function(err) {
             if (err) throw new Error(err.message);
 
+            // LocalStorage Adapter Implementation
             // repo.remove('2e42b99c-7290-e141-ea71-e656cbd25833', function(err) {
             //     console.log('done');
             // });
@@ -20,14 +24,25 @@
             //     repo.save(model);
             // });
 
-            repo.all(function(err, models) {
-                if (models !== null) {
-                    console.log(models);
-                };
-            });
+            // repo.all(function(err, models) {
+            //     if (models !== null) {
+            //         console.log(models);
+            //     };
+            // });
 
-            repo.save({'name':'budi', 'age': 16});
-            console.log(repo);
+            // Memory Adapter Implementation
+            repo.save({'name': 'budi', 'age': 16}, function(data) {
+                console.log("Saving budi");
+            });
+            repo.save({'name': 'ani', 'age': 16}, function(data) {
+                console.log("Saving ani");
+            });
+            repo.update({"name": "ani"}, {"name": "banu"}, function() {
+                console.log("Updating ani");
+            });
+            repo.get({'name': 'banu'}, function(data) {
+                console.log(data);
+            });
 
         });
     </script>

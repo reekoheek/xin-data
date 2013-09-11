@@ -54,7 +54,7 @@
             storage.set(storageKey, object);
 
             if (callback) {
-                callback();
+                callback(null, object);
             }
         },
 

@@ -9,6 +9,5 @@
     "tests"
   ],
   "dependencies": {
-    "lawnchair": "~0.6.3"
   }
 }

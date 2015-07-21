@@ -1,6 +1,7 @@
 {
   "name": "xin-data",
   "version": "2.0.0",
+  "main": "xin-data.html",
   "ignore": [
     "**/.*",
     "node_modules",

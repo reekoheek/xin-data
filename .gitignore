@@ -1,3 +1,2 @@
-/.bowerrc
-/vendor
+/bower_components
 /*.sublime-*

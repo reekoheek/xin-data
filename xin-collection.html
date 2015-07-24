@@ -73,6 +73,7 @@ Example:
     },
 
     find: function(criteria) {
+      criteria = criteria || null;
       if (typeof criteria !== 'object') {
         var newCriteria = {};
         newCriteria[this.idAttribute] = criteria;

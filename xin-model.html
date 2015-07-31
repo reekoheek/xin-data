@@ -43,6 +43,7 @@
         .first(this.parameters)
         .then(function(entry) {
           this.set('entry', entry);
+          this.fire('change', entry);
           return entry;
         }.bind(this));
     }

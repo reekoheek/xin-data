@@ -1,0 +1,96 @@
+<!--
+  @license
+  Copyright (c) 2015 Xinix Technology
+
+  Permission is hereby granted, free of charge, to any person obtaining a
+  copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation
+  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+  and/or sell copies of the Software, and to permit persons to whom the
+  Software is furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+  DEALINGS IN THE SOFTWARE.
+-->
+
+<script type="text/javascript" src="./js/uuid.js"></script>
+<script type="text/javascript">
+(function(root) {
+  'use strict';
+
+  var xin = root.xin;
+
+  xin.data.register('localstorage', {
+    initialize: function() {
+
+    },
+
+    fetch: function(cursor, parameters) {
+      var uri = cursor.collection.uri;
+      if (this.options.asCache) {
+        uri = 'cache.' + uri;
+      }
+      return new Promise(function(resolve, reject) {
+          if (localStorage[uri + '.__index__']) {
+            return resolve(JSON.parse(localStorage[uri + '.__index__']));
+          }
+          resolve([]);
+        }.bind(this))
+        .then(function(index) {
+          var rows;
+          if (!cursor.criteria) {
+            rows = index.map(function(i) {
+              return JSON.parse(localStorage[uri + ':' + i]);
+            });
+          } else {
+            var criteriaKeys = Object.keys(cursor.criteria);
+            if (criteriaKeys.length === 1 && criteriaKeys[0] === '$id') {
+              rows = [JSON.parse(localStorage[uri + ':' + cursor.criteria.$id])];
+            } else {
+              throw new Error('Unimplemented yet!');
+            }
+          }
+          return rows;
+        });
+    },
+
+    persist: function(collection, row) {
+      var uri = collection.uri;
+      if (this.options.asCache) {
+        uri = 'cache.' + uri;
+      }
+      row = xin.clone(row);
+
+      return new Promise(function(resolve, reject) {
+        if (!row.$id) {
+          row.$id = uuid.v1();
+
+        }
+        var index = [];
+        try {
+          if (localStorage[uri + '.__index__']) {
+            index = JSON.parse(localStorage[uri + '.__index__']);
+          }
+        } catch(e) {
+        }
+        if (index.indexOf(row.$id) === -1) {
+          index.push(row.$id);
+        }
+        localStorage[uri + '.__index__'] = JSON.stringify(index);
+
+        localStorage[uri + ':' + row.$id] = JSON.stringify(row);
+
+        resolve(row);
+      }.bind(this));
+    }
+  });
+})(this);
+</script>

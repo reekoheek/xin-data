@@ -43,6 +43,9 @@
       });
       adapters[name] = adapter;
     },
+    defaultOptions: {
+      cacheAdapter: 'localstorage'
+    }
   };
 
   /**
@@ -68,12 +71,19 @@
    */
 
   var Collection = xin.data.Collection = function(uri, connection, options) {
-    this.uri = uri;
-    this.connection = connection;
-    this.options = options || {};
+    this.initialize(uri, connection, options);
   };
 
   Collection.prototype = xin.data.CollectionBehavior = {
+    initialize: function(uri, connection, options) {
+      this.uri = uri;
+      this.connection = connection;
+      this.options = options || {};
+      this.cacheConnection = new Connection(xin.data.defaultOptions.cacheAdapter, {
+        asCache: true
+      });
+    },
+
     find: function(criteria) {
       return new xin.data.Cursor(this, criteria);
     },
@@ -108,9 +118,23 @@
         }
       },
 
+      cacheConnection: {
+        get: function() {
+          return collection.cacheConnection;
+        }
+      },
+
       criteria: {
         get: function() {
-          return criteria;
+          if (criteria) {
+            var t = typeof criteria;
+            if (t === 'object') {
+              return criteria;
+            } else {
+              return {$id: criteria};
+            }
+          }
+          return criteria || null;
         }
       },
 
@@ -149,16 +173,48 @@
     }
   };
 
-  Cursor.prototype.fetch = function(parameters) {
-    console.log('Fetching "' + this.collection.uri + '" with criteria: ' + this.criteria);
+  Cursor.prototype._actualFetch = function(parameters) {
     return this.connection.fetch(this, parameters);
   };
 
+  Cursor.prototype._cacheFetch = function(parameters) {
+    return this.cacheConnection.fetch(this, parameters);
+  };
+
+  Cursor.prototype._cacheSave = function(collection, rows, parameters) {
+    rows.forEach(function(row) {
+      this.cacheConnection.persist(collection, row);
+    }.bind(this));
+  };
+
+  Cursor.prototype.fetch = function(parameters) {
+    console.log('Fetching "' + this.collection.uri + '" with criteria: ' + JSON.stringify(this.criteria));
+
+    var options = this.collection.options;
+
+    if (options.cache) {
+      switch(options.cache) {
+        case 'networkFirst':
+          return this._actualFetch(parameters)
+            .then(function(rows) {
+              this._cacheSave(this.collection, rows, parameters);
+              return rows;
+            }.bind(this), function() {
+              console.warn('fallback to cache');
+              return this._cacheFetch(parameters);
+            }.bind(this));
+        default:
+          return Promise.reject(new Error('Unimplemented cache strategy: ' + options.cache));
+      }
+    } else {
+      return this._actualFetch(parameters);
+    }
+  };
+
   Cursor.prototype.first = function(parameters) {
-    console.log('Fetching first "' + this.collection.uri + '" with criteria: ' + this.criteria);
+    console.log('Fetching first "' + this.collection.uri + '" with criteria: ' + JSON.stringify(this.criteria));
     this.limit(1);
-    return this.connection
-        .fetch(this, parameters)
+    return this.fetch(this, parameters)
         .then(function(entries) {
           return entries[0];
         });

@@ -38,6 +38,8 @@
     },
 
     attached: function() {
+      this.initialize(this.uri, null, this.options);
+
       if (this.parentElement.is === 'xin-data') {
         Object.defineProperty(this, 'connection', {
           get: function() {

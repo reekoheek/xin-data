@@ -29,7 +29,7 @@
   xin.Component({
     is: 'xin-data',
 
-    behaviors: [xin.ContainerBehavior],
+    behaviors: ['xin.ContainerBehavior'],
 
     properties: {
       adapter: {

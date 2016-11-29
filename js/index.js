@@ -26,6 +26,10 @@
 
   var xin = root.xin || {};
 
+  if (typeof xin.data === 'object') {
+    return;
+  }
+
   var adapters = {};
   xin.data = {
     register: function(name, adapter) {
@@ -74,7 +78,7 @@
     this.initialize(uri, connection, options);
   };
 
-  Collection.prototype = xin.data.CollectionBehavior = {
+  var CollectionBehavior = xin.data.CollectionBehavior = Collection.prototype = {
     initialize: function(uri, connection, options) {
       this.uri = uri;
       this.connection = connection;
@@ -100,6 +104,10 @@
       return this.connection.remove(this, model);
     },
   };
+
+  if (xin.Behavior) {
+    xin.Behavior('xin.data.CollectionBehavior', CollectionBehavior);
+  }
 
   /**
    * Cursor

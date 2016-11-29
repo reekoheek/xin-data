@@ -26,15 +26,17 @@
 
   var xin = root.xin;
 
-  xin.data.DataAwareBehavior = {
+  var DataAwareBehavior = {
     listeners: {
-      'focus': '_focused',
+      'focusing': '_focusing',
     },
 
-    _focused: function() {
+    _focusing: function() {
       xin.Dom(this).querySelectorAll('xin-cursor, xin-model').forEach(function(element) {
         element.fetch();
       });
     }
   };
+
+  xin.Behavior('xin.data.DataAwareBehavior', DataAwareBehavior);
 })(this);

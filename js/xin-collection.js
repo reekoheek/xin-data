@@ -29,7 +29,7 @@
   xin.Component({
     is: 'xin-collection',
 
-    behaviors: [xin.ContainerBehavior, xin.data.CollectionBehavior],
+    behaviors: ['xin.ContainerBehavior', 'xin.data.CollectionBehavior'],
 
     properties: {
       uri: String,

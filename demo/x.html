@@ -1,0 +1,35 @@
+<script>
+(function() {
+  xin.Component({
+    is: 'x-scoped',
+
+    properties: {
+      firstName: String,
+      lastName: String,
+      fullName: {
+        type: String,
+        notify: true,
+        computed: '_computeFullName(firstName, lastName)',
+      },
+      notification: {
+        type: String,
+        notify: true,
+      },
+    },
+
+    _computeFullName: function(firstName, lastName) {
+      return firstName + ' ' + lastName;
+    },
+  });
+
+  xin.Component({
+    is: 'x-notify',
+    properties: {
+      nValue: {
+        type: String,
+        notify: true,
+      },
+    }
+  })
+})();
+</script>

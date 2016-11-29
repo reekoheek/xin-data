@@ -27,7 +27,7 @@
   xin.Component({
     is: 'xin-cursor',
 
-    behaviors: [xin.ContainerBehavior],
+    behaviors: ['xin.ContainerBehavior'],
 
     properties: {
       find: {

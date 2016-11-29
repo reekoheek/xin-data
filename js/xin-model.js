@@ -63,6 +63,10 @@
         throw new Error('Cannot fetch new instance model');
       }
 
+      if (!this.collection) {
+        throw new Error(this.__getId() + ' Collection not bound!');
+      }
+
       return this.collection
         .find(this.find)
         .first(this.parameters)
@@ -74,6 +78,10 @@
     },
 
     save: function() {
+      if (!this.collection) {
+        throw new Error(this.__getId() + ' Collection not bound!');
+      }
+
       return this.collection.save(this.entry);
     }
   });

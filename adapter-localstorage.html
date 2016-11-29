@@ -21,12 +21,23 @@
   DEALINGS IN THE SOFTWARE.
 -->
 
+<!--
+@library localstorage
+
+This is xin-data adapter for localStorage.
+
+-->
 <script type="text/javascript" src="./js/uuid.js"></script>
 <script type="text/javascript">
 (function(root) {
   'use strict';
 
   var xin = root.xin;
+
+  if (typeof xin.data === 'undefined') {
+    console.error('xin.data is not initialized yet');
+    return;
+  }
 
   xin.data.register('localstorage', {
     initialize: function() {

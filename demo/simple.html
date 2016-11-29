@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trashing</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script>
+  var xinOptions = {
+    // debug: true,
+  };
+  </script>
+  <link rel="import" href="/bower_components/xin/xin-app.html">
+  <link rel="import" href="/bower_components/xin/xin-view.html">
+  <link rel="import" href="/bower_components/xin-data/xin-data.html">
+  <link rel="import" href="/bower_components/xin-data/adapter-localstorage.html">
+  <link rel="import" href="/bower_components/xin-data/xin-collection.html">
+  <link rel="import" href="/bower_components/xin-data/xin-cursor.html">
+  <link rel="import" href="/bower_components/xin-data/xin-model.html">
+  <link rel="import" href="./x.html">
+
+  <!-- <script>
+  function next() {
+    console.log('register next');
+
+    xin.Component({
+      is: 'x-scoped'
+    });
+
+    xin.Component({
+      is: 'x-notify',
+      properties: {
+        nValue: {
+          type: String,
+          notify: true,
+        },
+      }
+    });
+
+    // app.set('newItem', {});
+    // app.foo = function(evt) {
+    //   evt.preventDefault();
+    //   alert('xxx')
+    // }
+    //
+    // app.addNew = function(evt) {
+    //   evt.preventDefault();
+    //
+    //   this.$.newInstance.save();
+    // };
+  }
+
+  if (window.xin) {
+    next();
+  } else {
+    window.addEventListener('HTMLImportsLoaded', next);
+  }
+  </script> -->
+
+  <xin-app id="app">
+    <template>
+      <!-- <xin-data id="dat" adapter="localstorage">
+        <xin-collection ref="$collection"></xin-collection>
+      </xin-data> -->
+
+      <h1>Trashing</h1>
+
+      <!-- <input type="text" value="{{foo}}">
+      <x-notify id="notfoo" n-value="{{foo}}">
+        <template>
+          <input type="text" value="{{nValue}}">
+        </template>
+      </x-notify> -->
+
+      <style>
+        div, label, input {
+          width: 100%;
+          display: block;
+        }
+      </style>
+      <!--
+        full-name="{{scopeFullName}}"
+        notification="{{scopeNotification}}"
+      -->
+      <x-scoped id="scope"
+        first-name="[[scopeFirstName]]"
+        last-name="[[scopeLastName]]"
+        notification="{{scopeNotification}}"
+        full-name="{{scopeFullName}}"
+        >
+        <template>
+          <div>
+            <label>fullName</label>
+            <div>[[fullName]]</div>
+          </div>
+          <div>
+            <label>notification</label>
+            <input type="text" value="{{notification}}">
+          </div>
+        </template>
+      </x-scoped>
+
+      <div>[[scopeNotification]]</div>
+      <div>fullname <span>[[scopeFullName]]</span></div>
+      <div>
+        <label>scopeFirstName</label>
+        <input type="text" value="{{scopeFirstName}}">
+      </div>
+      <div>
+        <label>scopeLastName</label>
+        <input type="text" value="{{scopeLastName}}">
+      </div>
+    </template>
+  </xin-app>
+
+
+</body>
+</html>
